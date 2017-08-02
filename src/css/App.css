@@ -1,12 +1,12 @@
 body{
-  padding: 50px 0;
+  padding: 60px 0;
 }
 
 /* LOGIN */
 .loginOuterContainer{
   position: relative;
-   min-height: 93%;
-   height:93vh;
+   min-height: 80%;
+   height:80vh;
  }
 .loginInnerContainer{
   position: absolute;

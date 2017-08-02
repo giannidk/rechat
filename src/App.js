@@ -10,9 +10,9 @@ import './css/spinner.css';
 import { auth } from './firebase';
 //import reducers from './reducers';
 import { Topnav } from './components/common';
-import PrivateRoute from './routes/PrivateRoute';
 import Login from './routes/login';
 import Dashboard from './routes/dashboard';
+import ChatRoom from './routes/ChatRoom';
 import Settings from './routes/settings';
 import { setLoggedInState } from './actions';
 
@@ -40,7 +40,8 @@ class App extends Component {
         <Grid>
       <Topnav />
            <Switch>
-              <PrivateRoute path="/dashboard" component={Dashboard} />
+              <Route path="/chatroom" component={ChatRoom} />
+              <Route path="/dashboard" component={Dashboard} />
               <Route path="/settings" component={Settings} />
               <Route path="/login" component={Login} />
               <Route path="/" component={Login} />

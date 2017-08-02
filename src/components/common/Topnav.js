@@ -13,7 +13,7 @@ class Topnav extends Component{
             <Navbar inverse collapseOnSelect fixedTop>
               <Navbar.Header>
                 <Navbar.Brand>
-                  <LinkContainer to="/dashboard"><a>React Auth</a></LinkContainer>
+                  <LinkContainer to="/dashboard"><a>reChat</a></LinkContainer>
                 </Navbar.Brand>
                 <Navbar.Toggle />
               </Navbar.Header>
@@ -21,9 +21,10 @@ class Topnav extends Component{
                 <Nav>
                   <NavItemLink to="/login" label="Login" />  
                   <NavItemLink to="/dashboard" label="Dashboard" />                 
+                  <NavItemLink to="/settings" label="Settings" />
                 </Nav>
                 <Nav pullRight>                  
-                  <NavItemLink to="/settings" label="Settings" />
+                  <NavItemLink to="/chatroom" label="chat room" />                 
                 </Nav>
               </Navbar.Collapse>
             </Navbar>

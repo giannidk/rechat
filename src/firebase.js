@@ -2,12 +2,12 @@ import firebase from 'firebase';
 
 // Initialize Firebase
   const config = {
-    apiKey: "AIzaSyDYjk__kVG_ISxWMSF4Q9XRYqyzyCgSDhU",
-    authDomain: "authentication-71403.firebaseapp.com",
-    databaseURL: "https://authentication-71403.firebaseio.com",
-    projectId: "authentication-71403",
-    storageBucket: "authentication-71403.appspot.com",
-    messagingSenderId: "981202444879"
+    apiKey: "AIzaSyB2-iMgiGCfSBOrokOn4kovBnqEQWX7D4k",
+    authDomain: "rechat-f7973.firebaseapp.com",
+    databaseURL: "https://rechat-f7973.firebaseio.com",
+    projectId: "rechat-f7973",
+    storageBucket: "",
+    messagingSenderId: "1059192181205"
   };
   firebase.initializeApp(config);
 
