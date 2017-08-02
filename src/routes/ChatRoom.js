@@ -11,7 +11,8 @@ import { Spinner } from '../components/common';
 class ChatRoom extends Component {
 
   componentWillMount(){
-        this.props.fetchMessages();
+    const { roomID } = this.props.match.params;
+        this.props.fetchMessages({roomID});
   }
 
   onMessageChange(text) {
@@ -21,7 +22,8 @@ class ChatRoom extends Component {
 
   onSubmit() {
     const { message } = this.props;
-    this.props.submitMessage({ message },
+    const { roomID } = this.props.match.params;
+    this.props.submitMessage({ roomID, message },
         () => {this.props.reset()}
       );
   }
@@ -79,7 +81,7 @@ class ChatRoom extends Component {
       <div>
                   
 
-            <Panel>
+            <Panel className="messages-container">
                 {this.renderMessages()}
             </Panel>
 

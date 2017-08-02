@@ -1,55 +1,89 @@
 import { database, auth } from '../firebase';
 
-import { 
-    MESSAGE_CHANGED,
-    SUBMIT_MESSAGE,
-    FETCH_MESSAGES,
-    FETCH_MESSAGES_SUCCESS,
-    FETCH_MESSAGES_FAIL,
+import {
+  CREATE_CHAT,
+  CREATE_CHAT_SUCCESS,
+  CREATE_CHAT_FAIL,
+  MESSAGE_CHANGED,
+  SCREEN_NAME_CHANGED,
+  SUBMIT_MESSAGE,
+  FETCH_MESSAGES,
+  FETCH_MESSAGES_SUCCESS,
+  FETCH_MESSAGES_FAIL,
 } from './types';
 
 
 
-export function fetchMessages() {
-   let registrations = {};
-    return (dispatch) => {
+export const screenNameChanged = (text) => {
+  console.log(text);
+  return {
+    type: SCREEN_NAME_CHANGED,
+    payload: text
+  };
+};
+
+
+export function createChatroom({ screenName, maxUsers }, callback) {
+  return (dispatch) => {
+    dispatch({ type: CREATE_CHAT });
+    database.ref('rooms').push({ admin: screenName, maxUsers: maxUsers })
+      .then(
+      snap => {
+        console.log('SNAP: ', snap.key);
         dispatch({
-        type: FETCH_MESSAGES,
+          type: CREATE_CHAT_SUCCESS,
+          payload: screenName
+        });
+        callback(snap.key);
+      }
+      );
+  }
+}
+
+export function fetchMessages({roomID}) {
+  return (dispatch) => {
+    dispatch({
+      type: FETCH_MESSAGES,
     });
-        database.ref('testChat').child('messages')
-        .on('value', 
+        console.log(roomID)
+    database.ref('rooms').child(roomID).child('messages')
+      .on('value',
       snapshot => {
+        console.log(snapshot.val())
         dispatch({
           type: FETCH_MESSAGES_SUCCESS,
           payload: snapshot.val()
         });
       }),
       error => {
-         dispatch({
+        dispatch({
           type: FETCH_MESSAGES_FAIL,
           payload: error
         });
       }
-        
-    }
-} 
+  }
+}
 
 export const messageChanged = (text) => {
-    return {
-        type: MESSAGE_CHANGED,
-        payload: text
-    };
+  return {
+    type: MESSAGE_CHANGED,
+    payload: text
+  };
 };
 
-export const submitMessage = ({message}, callback) => {
+export const submitMessage = ({ roomID, message }, callback) => {
   const dateTime = Date.now();
   return (dispatch) => {
-    console.log(message);
-    database.ref('testChat').child('messages').push({user: 'Gianni', text: message, date: dateTime});
-    dispatch({
-      type: SUBMIT_MESSAGE,
-      payload: message
-    });
+    database.ref('rooms').child(roomID).child('messages').push({ user: 'Gianni', text: message, date: dateTime })
+      .then(
+      snap => {
+        console.log('SNAP: ', snap);
+        dispatch({
+          type: SUBMIT_MESSAGE,
+          payload: message
+        });
+      }
+      );
     callback();
   }
 }

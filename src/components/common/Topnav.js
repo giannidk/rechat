@@ -19,6 +19,7 @@ class Topnav extends Component{
               </Navbar.Header>
               <Navbar.Collapse>
                 <Nav>
+                  <NavItemLink to="/home" label="Home" />  
                   <NavItemLink to="/login" label="Login" />  
                   <NavItemLink to="/dashboard" label="Dashboard" />                 
                   <NavItemLink to="/settings" label="Settings" />

@@ -1,4 +1,8 @@
 import {
+  SCREEN_NAME_CHANGED,
+  CREATE_CHAT,
+  CREATE_CHAT_SUCCESS,
+  CREATE_CHAT_FAIL,
   MESSAGE_CHANGED,
   SUBMIT_MESSAGE,
   FETCH_MESSAGES,
@@ -8,6 +12,8 @@ import {
 
 
 const INITIAL_STATE = {
+  screenName: '',
+  maxUsers: '',
   message: '',
   loading: false,
   messages: {},
@@ -16,6 +22,12 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case SCREEN_NAME_CHANGED:
+      return { ...state, screenName: action.payload };
+    case CREATE_CHAT:
+      return { ...state, loading: true};
+    case CREATE_CHAT_SUCCESS:
+      return { ...state, screenName: action.payload, loading: false};
     case FETCH_MESSAGES:
       return { ...state, loading: true };
     case FETCH_MESSAGES_SUCCESS:

@@ -14,3 +14,11 @@ body{
   left: 50%;
   transform: translate(-50%, -60%);
 }
+
+
+/* CHAT ROOM */
+.messages-container{
+  min-height: 70vh;
+  height: 70vh;
+  overflow: auto;
+}
