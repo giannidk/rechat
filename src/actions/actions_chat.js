@@ -14,8 +14,8 @@ import {
 
 // function used for the guests of the anonimous rooms
 export const screenNameChanged = (screenName) => {
-    // save user in users table
-    database.ref('users').push(screenName);
+    // save user in users table --> CHANGE THIS TO A NEW SEPARATE FUNCTION
+    //database.ref('users').push(screenName);
   return (dispatch) => {
     dispatch({
       type: SCREEN_NAME_CHANGED,
@@ -29,20 +29,30 @@ export function createChatroom({ screenName, maxUsers }, callback) {
     dispatch({ type: CREATE_CHAT });
 
     // save user in users table
-    database.ref('users').push(screenName);
+    database.ref('users').push(screenName)
+    .then( snap => {
+      const userID = snap.key;
 
-    // save room in rooms table
-    database.ref('rooms').push({ admin: screenName, maxUsers: maxUsers })
+      // save room in rooms table
+    database.ref('rooms').push({ host: userID, maxUsers: maxUsers })
       .then(
       snap => {
-        console.log('SNAP: ', snap.key);
-        dispatch({
+        const roomID = snap.key;
+         //database.ref('roomsUsers').child(roomID).child(userID).push(screenName)
+         database.ref('roomsUsers').child(roomID).child(userID).set(screenName)
+         .then(() => {
+            dispatch({
           type: CREATE_CHAT_SUCCESS,
           payload: screenName
         });
         callback(snap.key);
+         });
+        
       }
       );
+    });
+
+    
   }
 }
 
@@ -54,7 +64,6 @@ export function fetchMessages({roomID}) {
     database.ref('rooms').child(roomID).child('messages')
       .on('value',
       snapshot => {
-        console.log(snapshot.val())
         dispatch({
           type: FETCH_MESSAGES_SUCCESS,
           payload: snapshot.val()
@@ -82,7 +91,6 @@ export const submitMessage = ({ roomID, screenName, message }, callback) => {
     database.ref('rooms').child(roomID).child('messages').push({ user: screenName, text: message, date: dateTime })
       .then(
       snap => {
-        console.log('SNAP: ', snap);
         dispatch({
           type: SUBMIT_MESSAGE,
           payload: message

@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
-import { Panel, Alert, ListGroup, ListGroupItem } from 'react-bootstrap';
+import { Panel, Alert } from 'react-bootstrap';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { screenNameChanged, messageChanged, fetchMessages, submitMessage } from '../actions';
@@ -27,7 +26,6 @@ class ChatRoom extends Component {
 
   onScreenNameChanged(text) {
     this.setState({ screenName: text.target.value})
-    console.log(this.state);
   }
 
   onScreenNameSet() {
@@ -36,11 +34,14 @@ class ChatRoom extends Component {
 
 
   onSubmit() {
+    const messagesContainer = document.getElementById("messages-container");
     const { roomID } = this.props.match.params;
     const { screenName, message } = this.props;
-
     this.props.submitMessage({ roomID, screenName, message },
-      () => { this.props.reset() }
+      () => { 
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        this.props.reset() 
+      }
     );
   }
 
@@ -89,7 +90,6 @@ class ChatRoom extends Component {
     const { handleSubmit, error, loading, message, screenName } = this.props;
 
     const renderBox = (screenName) => {
-      console.log(screenName);
       if(!screenName){ 
         return(
           <Panel>
@@ -136,7 +136,7 @@ class ChatRoom extends Component {
 
     return (
       <div>
-        <Panel className="messages-container">
+        <Panel className="messages-container" id="messages-container">
           {this.renderMessages()}
         </Panel>
         {renderBox(screenName)}
