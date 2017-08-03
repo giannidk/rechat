@@ -1,4 +1,4 @@
-import { database, auth } from '../firebase';
+import { database } from '../firebase';
 
 import {
   CREATE_CHAT,
@@ -12,20 +12,26 @@ import {
   FETCH_MESSAGES_FAIL,
 } from './types';
 
-
-
-export const screenNameChanged = (text) => {
-  console.log(text);
-  return {
-    type: SCREEN_NAME_CHANGED,
-    payload: text
+// function used for the guests of the anonimous rooms
+export const screenNameChanged = (screenName) => {
+    // save user in users table
+    database.ref('users').push(screenName);
+  return (dispatch) => {
+    dispatch({
+      type: SCREEN_NAME_CHANGED,
+      payload: screenName
+    })
   };
 };
-
 
 export function createChatroom({ screenName, maxUsers }, callback) {
   return (dispatch) => {
     dispatch({ type: CREATE_CHAT });
+
+    // save user in users table
+    database.ref('users').push(screenName);
+
+    // save room in rooms table
     database.ref('rooms').push({ admin: screenName, maxUsers: maxUsers })
       .then(
       snap => {
@@ -45,7 +51,6 @@ export function fetchMessages({roomID}) {
     dispatch({
       type: FETCH_MESSAGES,
     });
-        console.log(roomID)
     database.ref('rooms').child(roomID).child('messages')
       .on('value',
       snapshot => {
@@ -71,10 +76,10 @@ export const messageChanged = (text) => {
   };
 };
 
-export const submitMessage = ({ roomID, message }, callback) => {
+export const submitMessage = ({ roomID, screenName, message }, callback) => {
   const dateTime = Date.now();
   return (dispatch) => {
-    database.ref('rooms').child(roomID).child('messages').push({ user: 'Gianni', text: message, date: dateTime })
+    database.ref('rooms').child(roomID).child('messages').push({ user: screenName, text: message, date: dateTime })
       .then(
       snap => {
         console.log('SNAP: ', snap);

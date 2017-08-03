@@ -37,7 +37,7 @@ class App extends Component {
     const { store } = this.props;
     return (
       <Provider store={store}>
-      <BrowserRouter>
+      <BrowserRouter basename="demos/rechat">
         <Grid>
       <Topnav />
            <Switch>

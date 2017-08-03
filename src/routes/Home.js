@@ -1,6 +1,4 @@
-//import firebase from 'firebase';
 import React, { Component } from 'react';
-//import { Route, Redirect } from 'react-router-dom';
 import { Panel, Alert } from 'react-bootstrap';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
